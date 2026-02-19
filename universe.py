@@ -23,6 +23,19 @@ class Universe:
         if ENABLE_COMMUNICATION:
             self.signals = []
         
+        # Phase 3: Structures
+        if ENABLE_STRUCTURES:
+            self.structures = []
+        
+        # Phase 3: Puzzles
+        if ENABLE_PUZZLES:
+            self.puzzles = []
+        
+        # Phase 3: Social hierarchies
+        if ENABLE_HIERARCHY:
+            from social_hierarchy import SocialHierarchy
+            self.hierarchies = []
+        
         # Statistics
         self.stats = {
             'total_births': 0,
@@ -31,7 +44,9 @@ class Universe:
             'peak_population': 0,
             'predator_count': 0,
             'prey_count': 0,
-            'signals_emitted': 0
+            'signals_emitted': 0,
+            'structures_built': 0,
+            'puzzles_solved': 0
         }
     
     def _spawn_initial_energy(self):
@@ -100,6 +115,17 @@ class Universe:
             self.signals.append(signal)
             self.stats['signals_emitted'] = self.stats.get('signals_emitted', 0) + 1
     
+    def add_structure(self, structure):
+        """Add a structure to the universe"""
+        if ENABLE_STRUCTURES and len(self.structures) < MAX_STRUCTURES:
+            self.structures.append(structure)
+            self.stats['structures_built'] = self.stats.get('structures_built', 0) + 1
+    
+    def add_puzzle(self, puzzle):
+        """Add a puzzle to the universe"""
+        if ENABLE_PUZZLES and len(self.puzzles) < MAX_PUZZLES:
+            self.puzzles.append(puzzle)
+    
     def update(self):
         """Update universe one time step"""
         self.tick += 1
@@ -117,6 +143,27 @@ class Universe:
             
             for signal in expired_signals:
                 self.signals.remove(signal)
+        
+        # Phase 3: Update structures
+        if ENABLE_STRUCTURES:
+            destroyed_structures = []
+            for structure in self.structures:
+                structure.update()
+                if structure.is_destroyed():
+                    destroyed_structures.append(structure)
+            
+            for structure in destroyed_structures:
+                self.structures.remove(structure)
+        
+        # Phase 3: Spawn puzzles occasionally
+        if ENABLE_PUZZLES and random.random() < PUZZLE_SPAWN_CHANCE:
+            if len(self.puzzles) < MAX_PUZZLES:
+                from problem_solving import Puzzle
+                x = random.randint(0, self.width - 1)
+                y = random.randint(0, self.height - 1)
+                puzzle_type = random.choice(['maze', 'locked_resource', 'multi_step'])
+                puzzle = Puzzle(x, y, puzzle_type)
+                self.add_puzzle(puzzle)
         
         # Phase 2: Occasionally spawn predators
         if ENABLE_PREDATORS and random.random() < PREDATOR_SPAWN_CHANCE:

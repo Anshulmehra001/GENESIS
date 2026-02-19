@@ -62,9 +62,24 @@ MAX_ORGANISM_SIZE = 5  # Max cells in one organism
 ENABLE_LEARNING = True
 LEARNING_RATE = 0.1
 
-# Phase 3: Social Structures
-ENABLE_SOCIAL = True
-KIN_RECOGNITION_THRESHOLD = 0.8  # Genome similarity for kin recognition
+# Phase 2: Directional Sensing
+ENABLE_DIRECTIONAL_SENSING = True
+TURNING_ENERGY_COST = 0.1
+
+# Phase 3: Tool Use & Structures
+ENABLE_STRUCTURES = True
+ENABLE_TOOLS = True
+STRUCTURE_BUILD_COST = 50
+MAX_STRUCTURES = 500
+
+# Phase 3: Problem Solving
+ENABLE_PUZZLES = True
+PUZZLE_SPAWN_CHANCE = 0.0001
+MAX_PUZZLES = 10
+
+# Phase 3: Social Hierarchy
+ENABLE_HIERARCHY = True
+CHALLENGE_ENERGY_COST = 10  # Genome similarity for kin recognition
 
 # Visualization
 CELL_SIZE = 8
