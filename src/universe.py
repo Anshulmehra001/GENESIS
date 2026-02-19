@@ -212,6 +212,7 @@ class Universe:
             'population': len(self.organisms),
             'total_births': self.stats['total_births'],
             'total_deaths': self.stats['total_deaths'],
+            'total_energy_consumed': self.stats['total_energy_consumed'],
             'total_energy': np.sum(self.energy_grid),
             'avg_organism_energy': np.mean([o.energy for o in self.organisms]) if self.organisms else 0,
             'peak_population': self.stats['peak_population']

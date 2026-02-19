@@ -2,7 +2,13 @@
 Detailed test for vision cone functionality
 """
 
+import sys
+import os
 import math
+
+# Add src directory to path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+
 from organism import Organism
 from universe import Universe
 from config import *

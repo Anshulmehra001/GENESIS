@@ -27,7 +27,7 @@ This is an attempt to solve one of the hardest unsolved problems in AI: creating
 
 ## 🚀 Quick Start
 
-> **New here? Read [START_HERE.md](START_HERE.md) first!** ⭐
+> **New here? Read [docs/START_HERE.md](docs/START_HERE.md) first!** ⭐
 
 ### Installation
 ```bash
@@ -36,7 +36,7 @@ pip install -r requirements.txt
 
 ### Run Evolution
 ```bash
-python main.py
+python run.py
 ```
 
 ### Controls
@@ -44,26 +44,40 @@ python main.py
 - **R**: Reset universe
 - **ESC**: Quit
 
-**See [QUICKSTART.md](QUICKSTART.md) for detailed guide.**
+**See [docs/QUICKSTART.md](docs/QUICKSTART.md) for detailed guide.**
 
 ---
 
 ## 📊 Current Status
 
 ### Phase 1: Foundation ✅ COMPLETE
+### Phase 2: Evolution & Complexity ✅ COMPLETE
+### Phase 3: Emergence & Intelligence ✅ COMPLETE
 
 **What's Working:**
 - ✅ Self-replicating organisms with genetic code
 - ✅ Mutation and natural selection
 - ✅ Energy-based ecosystem
 - ✅ Real-time visualization
-- ✅ Safe, sandboxed environment
+- ✅ Neural network brains for decision-making
+- ✅ Predator-prey dynamics with hunting
+- ✅ Communication signals (alarm, food, mating)
+- ✅ Memory system (short-term and long-term)
+- ✅ Directional sensing with vision cones
+- ✅ Multi-cellular organisms with cell adhesion
+- ✅ Social hierarchies (ranks, roles, challenges)
+- ✅ Tool creation and use
+- ✅ Structure building (walls, traps, storage)
+- ✅ Problem-solving puzzles
+- ✅ Kin recognition and group formation
 
 **What You Can Do:**
 - Watch evolution happen in real-time
-- Observe organisms adapting to find energy
-- See genetic lineages (colors) emerge
-- Track population dynamics
+- Observe organisms adapting and learning
+- See predator-prey dynamics
+- Watch social hierarchies form
+- Observe tool use and structure building
+- Track population dynamics and emergent behaviors
 - Experiment with parameters
 
 ---
@@ -73,27 +87,13 @@ python main.py
 ```
 Phase 1          Phase 2           Phase 3           Phase 4           Phase 5
 Foundation   →   Evolution    →    Emergence    →    Cognition    →    AGI
-✅ COMPLETE      🔜 NEXT          🔮 FUTURE        🔮 FUTURE        🔮 GOAL
+✅ COMPLETE      ✅ COMPLETE      ✅ COMPLETE      🔜 NEXT          🔮 GOAL
 
 Simple           Complex           Social            Abstract          General
 Organisms        Behaviors         Intelligence      Reasoning         Intelligence
 ```
 
-### Phase 2: Evolution & Complexity (Next)
-- Neural network brains
-- Predator-prey dynamics
-- Communication between organisms
-- Memory and learning
-- Advanced sensing
-
-### Phase 3: Emergence & Intelligence
-- Multi-cellular organisms
-- Social structures (groups, hierarchies)
-- Tool use and environment modification
-- Problem-solving
-- Cultural evolution
-
-### Phase 4: Cognitive Emergence
+### Phase 4: Cognitive Emergence (Next)
 - Abstract reasoning
 - Language emergence
 - Self-awareness
@@ -107,28 +107,40 @@ Organisms        Behaviors         Intelligence      Reasoning         Intellige
 - Ethical reasoning
 - Open-ended evolution
 
-**See [ROADMAP.md](ROADMAP.md) for complete journey.**
+**See [docs/ROADMAP.md](docs/ROADMAP.md) for complete journey.**
 
 ---
 
 ## 📁 Project Structure
 
 ```
-genesis/
-├── README.md              # This file
-├── ROADMAP.md            # Complete project roadmap
-├── QUICKSTART.md         # Getting started guide
-├── RESEARCH_LOG.md       # Document your observations
-├── requirements.txt      # Python dependencies
-├── config.py            # All configurable parameters
-├── universe.py          # The digital world
-├── organism.py          # Life forms
-├── visualizer.py        # Real-time visualization
-├── main.py              # Run the simulation
-└── .kiro/specs/genesis-digital-biosphere/
-    ├── requirements.md  # Detailed requirements
-    ├── design.md        # System architecture
-    └── tasks.md         # Implementation tasks
+genesis-digital-biosphere/
+├── src/                    # Source code
+│   ├── main.py            # Main simulation loop
+│   ├── organism.py        # Organism implementation
+│   ├── universe.py        # Universe/world management
+│   ├── neural_network.py  # Neural network brains
+│   ├── predator.py        # Predator organisms
+│   ├── signal.py          # Communication system
+│   ├── structures.py      # Environmental structures
+│   ├── problem_solving.py # Puzzles and challenges
+│   ├── social_hierarchy.py # Social systems
+│   ├── directional_sensing.py # Vision and sensing
+│   ├── organism_extensions.py # Extension methods
+│   ├── visualizer.py      # Real-time visualization
+│   └── config.py          # Configuration parameters
+├── docs/                   # Documentation
+│   ├── START_HERE.md      # Getting started guide
+│   ├── QUICKSTART.md      # Quick reference
+│   ├── VISION.md          # Project vision
+│   ├── ROADMAP.md         # Development roadmap
+│   ├── RESEARCH_LOG.md    # Research observations
+│   └── ...
+├── tests/                  # Test files
+├── .kiro/specs/           # Specification documents
+├── run.py                 # Entry point
+├── requirements.txt       # Dependencies
+└── README.md              # This file
 ```
 
 ---
@@ -136,13 +148,13 @@ genesis/
 ## 🔬 Research & Documentation
 
 ### For Researchers
-- **[requirements.md](.kiro/specs/genesis-digital-biosphere/requirements.md)** - Complete feature requirements
-- **[design.md](.kiro/specs/genesis-digital-biosphere/design.md)** - System architecture and design
-- **[RESEARCH_LOG.md](RESEARCH_LOG.md)** - Document your observations
+- **[.kiro/specs/genesis-digital-biosphere/requirements.md](.kiro/specs/genesis-digital-biosphere/requirements.md)** - Complete feature requirements
+- **[.kiro/specs/genesis-digital-biosphere/design.md](.kiro/specs/genesis-digital-biosphere/design.md)** - System architecture and design
+- **[docs/RESEARCH_LOG.md](docs/RESEARCH_LOG.md)** - Document your observations
 
 ### For Developers
-- **[tasks.md](.kiro/specs/genesis-digital-biosphere/tasks.md)** - Implementation roadmap
-- **[config.py](config.py)** - Tweak simulation parameters
+- **[.kiro/specs/genesis-digital-biosphere/tasks.md](.kiro/specs/genesis-digital-biosphere/tasks.md)** - Implementation roadmap
+- **[src/config.py](src/config.py)** - Tweak simulation parameters
 - **Code is documented** - Read the source for details
 
 ---
@@ -186,11 +198,23 @@ Organisms exist only in simulation memory. They cannot escape or affect your sys
 - [x] Genetic diversity emerges
 - [x] Behavioral adaptation visible
 
-### Phase 2 (Next)
-- [ ] Predator-prey cycles
-- [ ] Communication protocols
-- [ ] Multiple ecological niches
-- [ ] Learning within lifetime
+### Phase 2 ✅
+- [x] Predator-prey cycles
+- [x] Communication protocols
+- [x] Multiple ecological niches
+- [x] Learning within lifetime
+
+### Phase 3 ✅
+- [x] Multi-cellular organisms
+- [x] Social hierarchies
+- [x] Tool use and structures
+- [x] Problem-solving behaviors
+
+### Phase 4 (Next)
+- [ ] Abstract reasoning
+- [ ] Language emergence
+- [ ] Self-awareness indicators
+- [ ] Creative problem-solving
 
 ### Ultimate Goal
 - [ ] General intelligence emerges
@@ -224,11 +248,11 @@ Organisms exist only in simulation memory. They cannot escape or affect your sys
 
 ## 📚 Learn More
 
-- **[ROADMAP.md](ROADMAP.md)** - Complete project vision and timeline
-- **[QUICKSTART.md](QUICKSTART.md)** - Detailed usage guide
-- **[requirements.md](.kiro/specs/genesis-digital-biosphere/requirements.md)** - Full requirements
-- **[design.md](.kiro/specs/genesis-digital-biosphere/design.md)** - Technical architecture
-- **[tasks.md](.kiro/specs/genesis-digital-biosphere/tasks.md)** - Implementation plan
+- **[docs/ROADMAP.md](docs/ROADMAP.md)** - Complete project vision and timeline
+- **[docs/QUICKSTART.md](docs/QUICKSTART.md)** - Detailed usage guide
+- **[.kiro/specs/genesis-digital-biosphere/requirements.md](.kiro/specs/genesis-digital-biosphere/requirements.md)** - Full requirements
+- **[.kiro/specs/genesis-digital-biosphere/design.md](.kiro/specs/genesis-digital-biosphere/design.md)** - Technical architecture
+- **[.kiro/specs/genesis-digital-biosphere/tasks.md](.kiro/specs/genesis-digital-biosphere/tasks.md)** - Implementation plan
 
 ---
 
@@ -245,21 +269,29 @@ We don't know. No one has successfully done it. But we're going to try.
 ## 📊 Project Info
 
 **Started:** 2026-02-15
-**Status:** Phase 1 Complete ✅
-**Next:** Phase 2 - Evolution & Complexity
+**Status:** Phase 1, 2, 3 Complete ✅
+**Next:** Phase 4 - Cognitive Emergence
 **Goal:** AGI emergence through evolution
 
 **Current Capabilities:**
 - Self-replicating organisms ✅
 - Genetic evolution ✅
 - Natural selection ✅
+- Neural network brains ✅
+- Predator-prey dynamics ✅
+- Communication signals ✅
+- Memory and learning ✅
+- Multi-cellular organisms ✅
+- Social hierarchies ✅
+- Tool use and structures ✅
+- Problem-solving ✅
 - Real-time observation ✅
 
 **Coming Soon:**
-- Neural network brains
-- Predator-prey dynamics
-- Communication
-- Memory and learning
+- Abstract reasoning
+- Language emergence
+- Self-awareness
+- Creative innovation
 
 ---
 
@@ -270,7 +302,7 @@ We don't know. No one has successfully done it. But we're going to try.
 pip install -r requirements.txt
 
 # Start evolution
-python main.py
+python run.py
 
 # Watch intelligence emerge
 ```
