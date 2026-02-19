@@ -19,12 +19,19 @@ class Universe:
         # Organisms list
         self.organisms = []
         
+        # Phase 2: Communication signals
+        if ENABLE_COMMUNICATION:
+            self.signals = []
+        
         # Statistics
         self.stats = {
             'total_births': 0,
             'total_deaths': 0,
             'total_energy_consumed': 0,
-            'peak_population': 0
+            'peak_population': 0,
+            'predator_count': 0,
+            'prey_count': 0,
+            'signals_emitted': 0
         }
     
     def _spawn_initial_energy(self):
@@ -68,12 +75,30 @@ class Universe:
             self.stats['peak_population'],
             len(self.organisms)
         )
+        
+        # Update predator/prey counts
+        if hasattr(organism, 'is_predator') and organism.is_predator:
+            self.stats['predator_count'] = self.stats.get('predator_count', 0) + 1
+        else:
+            self.stats['prey_count'] = self.stats.get('prey_count', 0) + 1
     
     def remove_organism(self, organism):
         """Remove dead organism"""
         if organism in self.organisms:
             self.organisms.remove(organism)
             self.stats['total_deaths'] += 1
+            
+            # Update predator/prey counts
+            if hasattr(organism, 'is_predator') and organism.is_predator:
+                self.stats['predator_count'] = max(0, self.stats.get('predator_count', 0) - 1)
+            else:
+                self.stats['prey_count'] = max(0, self.stats.get('prey_count', 0) - 1)
+    
+    def add_signal(self, signal):
+        """Add a communication signal"""
+        if ENABLE_COMMUNICATION and len(self.signals) < MAX_SIGNALS:
+            self.signals.append(signal)
+            self.stats['signals_emitted'] = self.stats.get('signals_emitted', 0) + 1
     
     def update(self):
         """Update universe one time step"""
@@ -81,6 +106,26 @@ class Universe:
         
         # Spawn new energy
         self.spawn_energy()
+        
+        # Phase 2: Update signals
+        if ENABLE_COMMUNICATION:
+            expired_signals = []
+            for signal in self.signals:
+                signal.update()
+                if signal.is_expired():
+                    expired_signals.append(signal)
+            
+            for signal in expired_signals:
+                self.signals.remove(signal)
+        
+        # Phase 2: Occasionally spawn predators
+        if ENABLE_PREDATORS and random.random() < PREDATOR_SPAWN_CHANCE:
+            if self.stats.get('predator_count', 0) < len(self.organisms) * 0.1:  # Max 10% predators
+                from predator import Predator
+                x = random.randint(0, self.width - 1)
+                y = random.randint(0, self.height - 1)
+                predator = Predator(x, y)
+                self.add_organism(predator)
         
         # Update all organisms
         dead_organisms = []
@@ -115,7 +160,7 @@ class Universe:
     
     def get_stats(self):
         """Get current statistics"""
-        return {
+        stats = {
             'tick': self.tick,
             'population': len(self.organisms),
             'total_births': self.stats['total_births'],
@@ -124,3 +169,14 @@ class Universe:
             'avg_organism_energy': np.mean([o.energy for o in self.organisms]) if self.organisms else 0,
             'peak_population': self.stats['peak_population']
         }
+        
+        # Phase 2 stats
+        if ENABLE_PREDATORS:
+            stats['predator_count'] = self.stats.get('predator_count', 0)
+            stats['prey_count'] = self.stats.get('prey_count', 0)
+        
+        if ENABLE_COMMUNICATION:
+            stats['active_signals'] = len(self.signals) if hasattr(self, 'signals') else 0
+            stats['signals_emitted'] = self.stats.get('signals_emitted', 0)
+        
+        return stats

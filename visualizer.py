@@ -51,12 +51,60 @@ class Visualizer:
             # Size based on energy
             size = min(CELL_SIZE, max(2, int(organism.energy / 50)))
             
-            pygame.draw.circle(
-                self.screen,
-                color,
-                (x + CELL_SIZE // 2, y + CELL_SIZE // 2),
-                size
-            )
+            # Different shape for predators
+            if hasattr(organism, 'is_predator') and organism.is_predator:
+                # Draw triangle for predators
+                points = [
+                    (x + CELL_SIZE // 2, y),
+                    (x, y + CELL_SIZE),
+                    (x + CELL_SIZE, y + CELL_SIZE)
+                ]
+                pygame.draw.polygon(self.screen, color, points)
+            else:
+                # Draw circle for prey
+                pygame.draw.circle(
+                    self.screen,
+                    color,
+                    (x + CELL_SIZE // 2, y + CELL_SIZE // 2),
+                    size
+                )
+            
+            # Phase 3: Show multi-cellular organisms
+            if ENABLE_MULTICELLULAR and hasattr(organism, 'is_multicellular') and organism.is_multicellular:
+                pygame.draw.circle(
+                    self.screen,
+                    (255, 255, 255),
+                    (x + CELL_SIZE // 2, y + CELL_SIZE // 2),
+                    size + 1,
+                    1
+                )
+    
+    def draw_signals(self):
+        """Draw communication signals"""
+        if not ENABLE_COMMUNICATION or not SHOW_SIGNALS:
+            return
+        
+        if not hasattr(self.universe, 'signals'):
+            return
+        
+        for signal in self.universe.signals:
+            x = signal.x * CELL_SIZE + CELL_SIZE // 2
+            y = signal.y * CELL_SIZE + CELL_SIZE // 2
+            
+            # Color based on signal type
+            if signal.type == 'alarm':
+                color = (255, 0, 0)
+            elif signal.type == 'food':
+                color = (0, 255, 0)
+            elif signal.type == 'mating':
+                color = (255, 0, 255)
+            else:
+                color = (255, 255, 0)
+            
+            # Size based on strength
+            radius = int(signal.strength * 10)
+            if radius > 1:
+                pygame.draw.circle(self.screen, color, (x, y), radius, 1)
     
     def draw_stats(self):
         """Draw statistics panel"""
@@ -69,7 +117,7 @@ class Visualizer:
         pygame.draw.rect(self.screen, (20, 20, 20), stats_rect)
         
         # Title
-        title = self.font.render("GENESIS - Digital Evolution", True, (0, 255, 0))
+        title = self.font.render("GENESIS - Phase 2 & 3 Evolution", True, (0, 255, 0))
         self.screen.blit(title, (10, y_offset))
         
         # Stats
@@ -78,12 +126,18 @@ class Visualizer:
             f"Population: {stats['population']} (Peak: {stats['peak_population']})",
             f"Births: {stats['total_births']} | Deaths: {stats['total_deaths']}",
             f"Avg Energy: {stats['avg_organism_energy']:.1f}",
-            f"Total Energy in World: {stats['total_energy']:.0f}",
         ]
+        
+        # Phase 2 stats
+        if ENABLE_PREDATORS:
+            stats_text.append(f"Predators: {stats.get('predator_count', 0)} | Prey: {stats.get('prey_count', 0)}")
+        
+        if ENABLE_COMMUNICATION:
+            stats_text.append(f"Signals: {stats.get('active_signals', 0)} (Total: {stats.get('signals_emitted', 0)})")
         
         for i, text in enumerate(stats_text):
             rendered = self.small_font.render(text, True, (200, 200, 200))
-            self.screen.blit(rendered, (10, y_offset + 30 + i * 20))
+            self.screen.blit(rendered, (10, y_offset + 30 + i * 18))
         
         # Controls
         controls = self.small_font.render(
@@ -122,6 +176,10 @@ class Visualizer:
         # Draw layers
         if SHOW_ENERGY:
             self.draw_energy()
+        
+        # Draw signals first (under organisms)
+        if ENABLE_COMMUNICATION and SHOW_SIGNALS:
+            self.draw_signals()
         
         self.draw_organisms()
         

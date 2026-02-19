@@ -19,14 +19,27 @@ def initialize_universe():
     print(f"   Grid: {GRID_WIDTH}x{GRID_HEIGHT}")
     print(f"   Initial organisms: {INITIAL_ORGANISMS}")
     print(f"   Mutation rate: {MUTATION_RATE * 100}%")
+    print(f"   Neural networks: {USE_NEURAL_NETWORKS}")
+    print(f"   Predators enabled: {ENABLE_PREDATORS}")
+    print(f"   Communication enabled: {ENABLE_COMMUNICATION}")
+    print(f"   Multi-cellular enabled: {ENABLE_MULTICELLULAR}")
     print()
     
-    # Spawn initial organisms at random positions
+    # Spawn initial prey organisms
     for _ in range(INITIAL_ORGANISMS):
         x = random.randint(0, GRID_WIDTH - 1)
         y = random.randint(0, GRID_HEIGHT - 1)
         organism = Organism(x, y)
         universe.add_organism(organism)
+    
+    # Spawn initial predators
+    if ENABLE_PREDATORS:
+        from predator import Predator
+        for _ in range(INITIAL_PREDATORS):
+            x = random.randint(0, GRID_WIDTH - 1)
+            y = random.randint(0, GRID_HEIGHT - 1)
+            predator = Predator(x, y)
+            universe.add_organism(predator)
     
     print("✅ Universe initialized")
     print("🧬 Evolution begins NOW\n")
