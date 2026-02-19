@@ -17,6 +17,10 @@ class Organism:
         self.is_predator = False
         self.parent = parent
         
+        # Phase 2: Directional sensing
+        if ENABLE_DIRECTIONAL_SENSING:
+            self.direction = random.randint(0, 7)  # 0=N, 1=NE, 2=E, 3=SE, 4=S, 5=SW, 6=W, 7=NW
+        
         # Phase 2: Memory system
         if ENABLE_MEMORY:
             self.memory = []  # List of (x, y, energy_found) tuples
@@ -122,10 +126,57 @@ class Organism:
             for dy in range(-vision, vision + 1):
                 if dx == 0 and dy == 0:
                     continue
+                
+                # Phase 2: Directional sensing - only see in forward cone
+                if ENABLE_DIRECTIONAL_SENSING:
+                    if not self._is_in_vision_cone(dx, dy):
+                        continue
+                
                 energy = universe.get_energy(self.x + dx, self.y + dy)
                 nearby_energy.append((dx, dy, energy))
         
         return nearby_energy
+    
+    def _is_in_vision_cone(self, dx, dy):
+        """Check if a relative position is within the forward vision cone"""
+        if dx == 0 and dy == 0:
+            return True
+        
+        # Calculate angle to target relative to facing direction
+        import math
+        
+        # Direction vectors for each of 8 directions
+        direction_vectors = [
+            (0, -1),   # 0: North
+            (1, -1),   # 1: NE
+            (1, 0),    # 2: East
+            (1, 1),    # 3: SE
+            (0, 1),    # 4: South
+            (-1, 1),   # 5: SW
+            (-1, 0),   # 6: West
+            (-1, -1)   # 7: NW
+        ]
+        
+        facing_dx, facing_dy = direction_vectors[self.direction]
+        
+        # Calculate angle between facing direction and target
+        # Using dot product to determine if target is in front
+        dot_product = dx * facing_dx + dy * facing_dy
+        
+        # Normalize vectors
+        facing_mag = math.sqrt(facing_dx**2 + facing_dy**2)
+        target_mag = math.sqrt(dx**2 + dy**2)
+        
+        if facing_mag == 0 or target_mag == 0:
+            return True
+        
+        # Calculate angle
+        cos_angle = dot_product / (facing_mag * target_mag)
+        angle_rad = math.acos(max(-1, min(1, cos_angle)))
+        angle_deg = math.degrees(angle_rad)
+        
+        # Check if within vision cone
+        return angle_deg <= (VISION_CONE_ANGLE / 2)
     
     def sense_organisms(self, universe):
         """Detect nearby organisms"""
@@ -137,16 +188,23 @@ class Organism:
             if organism is self:
                 continue
             
-            dx = abs(organism.x - self.x)
-            dy = abs(organism.y - self.y)
+            dx = organism.x - self.x
+            dy = organism.y - self.y
             
-            # Handle wrap-around
-            dx = min(dx, universe.width - dx)
-            dy = min(dy, universe.height - dy)
+            # Handle wrap-around (find shortest path)
+            if abs(dx) > universe.width / 2:
+                dx = dx - universe.width if dx > 0 else dx + universe.width
+            if abs(dy) > universe.height / 2:
+                dy = dy - universe.height if dy > 0 else dy + universe.height
             
             distance = (dx ** 2 + dy ** 2) ** 0.5
             
             if distance <= VISION_RANGE:
+                # Phase 2: Directional sensing - only see in forward cone
+                if ENABLE_DIRECTIONAL_SENSING:
+                    if not self._is_in_vision_cone(int(dx), int(dy)):
+                        continue
+                
                 nearby.append((organism, distance))
         
         return nearby
@@ -238,13 +296,16 @@ class Organism:
         
         energy_here = universe.get_energy(self.x, self.y)
         
+        # Phase 2: Include directional information
+        direction_input = self.direction / 7.0 if ENABLE_DIRECTIONAL_SENSING else 0.5
+        
         inputs = [
             energy_n / 100, energy_s / 100, energy_e / 100, energy_w / 100,
             energy_here / 100,
             self.energy / 500,
             self.age / 1000,
             len(self.sense_organisms(universe)) / 10,
-            random.random(),  # Noise
+            direction_input,  # Current facing direction
             random.random()   # Noise
         ]
         
@@ -274,6 +335,27 @@ class Organism:
         """Move to new position"""
         new_x = (self.x + dx) % universe.width
         new_y = (self.y + dy) % universe.height
+        
+        # Phase 2: Directional sensing - update direction and pay turning cost
+        if ENABLE_DIRECTIONAL_SENSING and (dx != 0 or dy != 0):
+            # Map movement to direction (0-7)
+            direction_map = {
+                (0, -1): 0,   # North
+                (1, -1): 1,   # NE
+                (1, 0): 2,    # East
+                (1, 1): 3,    # SE
+                (0, 1): 4,    # South
+                (-1, 1): 5,   # SW
+                (-1, 0): 6,   # West
+                (-1, -1): 7   # NW
+            }
+            
+            new_direction = direction_map.get((dx, dy), self.direction)
+            
+            # Pay energy cost for turning
+            if new_direction != self.direction:
+                self.energy -= ENERGY_COST_TURN
+                self.direction = new_direction
         
         self.x = new_x
         self.y = new_y

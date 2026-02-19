@@ -29,16 +29,23 @@ class Predator(Organism):
             if organism is self or getattr(organism, 'is_predator', False):
                 continue
             
-            dx = abs(organism.x - self.x)
-            dy = abs(organism.y - self.y)
+            dx = organism.x - self.x
+            dy = organism.y - self.y
             
-            # Handle wrap-around
-            dx = min(dx, universe.width - dx)
-            dy = min(dy, universe.height - dy)
+            # Handle wrap-around (find shortest path)
+            if abs(dx) > universe.width / 2:
+                dx = dx - universe.width if dx > 0 else dx + universe.width
+            if abs(dy) > universe.height / 2:
+                dy = dy - universe.height if dy > 0 else dy + universe.height
             
             distance = (dx ** 2 + dy ** 2) ** 0.5
             
             if distance <= vision_range:
+                # Phase 2: Directional sensing - only see in forward cone
+                if ENABLE_DIRECTIONAL_SENSING:
+                    if not self._is_in_vision_cone(int(dx), int(dy)):
+                        continue
+                
                 nearby_prey.append((organism, dx, dy, distance))
         
         return nearby_prey

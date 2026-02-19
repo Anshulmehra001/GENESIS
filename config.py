@@ -48,6 +48,11 @@ ENABLE_MEMORY = True
 MEMORY_SIZE = 10  # Number of locations to remember
 VISION_RANGE = 5  # How far organisms can see
 
+# Phase 2: Directional Sensing
+ENABLE_DIRECTIONAL_SENSING = True
+ENERGY_COST_TURN = 0.5  # Energy cost to change direction
+VISION_CONE_ANGLE = 180  # Degrees of forward vision (180 = half circle)
+
 # Phase 3: Multi-cellular
 ENABLE_MULTICELLULAR = True
 CELL_ADHESION_CHANCE = 0.01  # Chance for cells to stick together

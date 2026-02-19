@@ -69,6 +69,10 @@ class Visualizer:
                     size
                 )
             
+            # Phase 2: Show facing direction
+            if ENABLE_DIRECTIONAL_SENSING and hasattr(organism, 'direction'):
+                self._draw_direction_indicator(organism, x, y, size)
+            
             # Phase 3: Show multi-cellular organisms
             if ENABLE_MULTICELLULAR and hasattr(organism, 'is_multicellular') and organism.is_multicellular:
                 pygame.draw.circle(
@@ -78,6 +82,40 @@ class Visualizer:
                     size + 1,
                     1
                 )
+    
+    def _draw_direction_indicator(self, organism, x, y, size):
+        """Draw a line showing which direction the organism is facing"""
+        import math
+        
+        # Direction vectors for each of 8 directions
+        direction_vectors = [
+            (0, -1),   # 0: North
+            (1, -1),   # 1: NE
+            (1, 0),    # 2: East
+            (1, 1),    # 3: SE
+            (0, 1),    # 4: South
+            (-1, 1),   # 5: SW
+            (-1, 0),   # 6: West
+            (-1, -1)   # 7: NW
+        ]
+        
+        dx, dy = direction_vectors[organism.direction]
+        
+        # Calculate line endpoint
+        center_x = x + CELL_SIZE // 2
+        center_y = y + CELL_SIZE // 2
+        line_length = size + 2
+        end_x = center_x + dx * line_length
+        end_y = center_y + dy * line_length
+        
+        # Draw direction line
+        pygame.draw.line(
+            self.screen,
+            (255, 255, 255),
+            (center_x, center_y),
+            (end_x, end_y),
+            1
+        )
     
     def draw_signals(self):
         """Draw communication signals"""
