@@ -18,6 +18,16 @@ ENERGY_COST_REPLICATE = 150
 ENERGY_COST_ALIVE = 0.5  # Energy cost per tick just to exist
 MIN_ENERGY_TO_REPLICATE = 200
 
+# Performance Mode (for long runs)
+PERFORMANCE_MODE = False  # Set True for faster simulation
+if PERFORMANCE_MODE:
+    MAX_POPULATION = 500  # Lower cap
+    ENABLE_COMMUNICATION = False
+    ENABLE_STRUCTURES = False
+    ENABLE_PUZZLES = False
+    ENABLE_ABSTRACT_REASONING = False
+    ENABLE_LANGUAGE = False
+
 # Evolution Parameters
 MUTATION_RATE = 0.1  # 10% chance of mutation during replication
 MUTATION_STRENGTH = 0.2  # How much genes can change

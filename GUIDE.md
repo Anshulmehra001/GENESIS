@@ -10,12 +10,36 @@ Digital organisms that evolve, learn, communicate, and develop complex behaviors
 # Install
 pip install -r requirements.txt
 
-# Run
+# Run with visualization
 python run.py
+
+# Run HEADLESS (10x faster, for long experiments)
+python run.py --headless
 
 # Resume from save
 python run.py final_save.pkl
+
+# Resume headless
+python run.py --headless final_save.pkl
 ```
+
+## For Long-Term Experiments (Million+ Ticks)
+
+**On average laptop:**
+
+1. **Use headless mode** - 10x faster
+```bash
+python run.py --headless
+```
+
+2. **Enable performance mode** in `src/config.py`:
+```python
+PERFORMANCE_MODE = True  # Disables expensive features
+```
+
+3. **Run overnight** - auto-saves every 1000 ticks
+
+**Time estimate:** 10-20 hours for 1 million ticks
 
 ## Controls
 

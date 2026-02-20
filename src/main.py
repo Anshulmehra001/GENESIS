@@ -60,10 +60,13 @@ def log_stats(universe):
 
 def main():
     """Main simulation loop"""
+    # Check for headless mode
+    headless = '--headless' in sys.argv
+    
     # Check for save file argument
     saver = SimulationSaver()
     
-    if len(sys.argv) > 1:
+    if len(sys.argv) > 1 and sys.argv[1] != '--headless':
         # Load from save file
         save_filename = sys.argv[1]
         save_data = saver.load(save_filename)
@@ -77,30 +80,35 @@ def main():
     else:
         universe = initialize_universe()
     
-    visualizer = Visualizer(universe)
+    if not headless:
+        visualizer = Visualizer(universe)
+    else:
+        print("🚀 Running in HEADLESS mode (no visualization)")
+        print("   Much faster! Press Ctrl+C to stop")
     
     running = True
     
     try:
         while running:
-            # Handle user input
-            event_result = visualizer.handle_events()
+            # Handle user input (only if not headless)
+            if not headless:
+                event_result = visualizer.handle_events()
+                
+                if event_result == False:
+                    running = False
+                    break
+                elif event_result == 'reset':
+                    print("\n🔄 Resetting universe...\n")
+                    universe = initialize_universe()
+                    visualizer.universe = universe
+                    continue
+                elif event_result == 'save':
+                    print("\n💾 Manual save...")
+                    saver.save(universe)
+                    continue
             
-            if event_result == False:
-                running = False
-                break
-            elif event_result == 'reset':
-                print("\n🔄 Resetting universe...\n")
-                universe = initialize_universe()
-                visualizer.universe = universe
-                continue
-            elif event_result == 'save':
-                print("\n💾 Manual save...")
-                saver.save(universe)
-                continue
-            
-            # Update simulation (if not paused)
-            if not visualizer.is_paused():
+            # Update simulation (if not paused or headless)
+            if headless or not visualizer.is_paused():
                 success = universe.update()
                 
                 if not success:
@@ -122,8 +130,9 @@ def main():
                     print("   All organisms have died.")
                     print("   Press R to reset or ESC to quit")
             
-            # Render visualization
-            visualizer.render()
+            # Render visualization (only if not headless)
+            if not headless:
+                visualizer.render()
     
     except KeyboardInterrupt:
         print("\n\n⚠️ Simulation interrupted by user")
@@ -148,7 +157,8 @@ def main():
         print(f"\n💾 Saved to: {final_save}")
         print("   To resume: python run.py final_save.pkl")
         
-        visualizer.close()
+        if not headless:
+            visualizer.close()
         print("\n👋 Simulation ended. Thank you for exploring GENESIS.")
 
 if __name__ == "__main__":

@@ -2,11 +2,11 @@
 
 > *"We are not creating AI. We are creating the conditions for AI to create itself."*
 
-## 🎯 Ultimate Goal
+## 🎯 Goal
 
-**Create the first truly open-ended artificial life system where intelligence emerges naturally through evolution - potentially leading to AGI from first principles.**
+**Create an open-ended artificial life system where complex behaviors emerge through evolution.**
 
-This is an attempt to solve one of the hardest unsolved problems in AI: creating digital life that evolves indefinitely, generating endless novelty and complexity, just like biological evolution on Earth.
+Study how complexity, communication, and intelligence-like behaviors can arise from simple rules and natural selection.
 
 ---
 
@@ -62,9 +62,8 @@ python run.py saves/autosave_tick_5000.pkl
 ### Phase 2: Evolution & Complexity ✅ COMPLETE
 ### Phase 3: Emergence & Intelligence ✅ COMPLETE
 ### Phase 4: Cognitive Emergence ✅ COMPLETE
-### Phase 5: AGI Emergence ✅ COMPLETE
 
-**ALL PHASES IMPLEMENTED!**
+**ALL CORE PHASES IMPLEMENTED!**
 
 **What's Working:**
 - ✅ Self-replicating organisms with genetic code
@@ -111,17 +110,17 @@ python run.py saves/autosave_tick_5000.pkl
 ## 🗺️ The Journey
 
 ```
-Phase 1          Phase 2           Phase 3           Phase 4           Phase 5
-Foundation   →   Evolution    →    Emergence    →    Cognition    →    AGI
-✅ COMPLETE      ✅ COMPLETE      ✅ COMPLETE      ✅ COMPLETE      ✅ COMPLETE
+Phase 1          Phase 2           Phase 3           Phase 4
+Foundation   →   Evolution    →    Emergence    →    Cognition
+✅ COMPLETE      ✅ COMPLETE      ✅ COMPLETE      ✅ COMPLETE
 
-Simple           Complex           Social            Abstract          General
-Organisms        Behaviors         Intelligence      Reasoning         Intelligence
+Simple           Complex           Social            Abstract
+Organisms        Behaviors         Intelligence      Reasoning
 ```
 
 **ALL PHASES COMPLETE!**
 
-Now entering observation and research phase to study emergent behaviors and measure AGI indicators.
+Now entering observation phase to study emergent behaviors and long-term evolution.
 
 **See [docs/ROADMAP.md](docs/ROADMAP.md) for complete journey.**
 
@@ -295,7 +294,7 @@ We don't know. No one has successfully done it. But we're going to try.
 **Started:** 2026-02-15
 **Status:** ALL PHASES COMPLETE ✅
 **Current:** Research & Observation Phase
-**Goal:** AGI emergence through evolution
+**Goal:** Study open-ended evolution
 
 **Current Capabilities:**
 - Self-replicating organisms ✅
@@ -322,7 +321,7 @@ We don't know. No one has successfully done it. But we're going to try.
 - Long-term observation
 - Emergent behavior documentation
 - Complexity growth measurement
-- AGI indicator evaluation
+- Open-ended evolution testing
 
 ---
 
