@@ -1,0 +1,19 @@
+{
+  "num_layers": 2,
+  "layer_sizes": [
+    20,
+    35
+  ],
+  "activations": [
+    "relu",
+    "tanh"
+  ],
+  "dropout_rates": [
+    0.3284176756487986,
+    0.4306379061966756
+  ],
+  "skip_connections": [],
+  "fitness": 0.8746633333333333,
+  "accuracy": 0.8833333333333333,
+  "complexity": 867
+}
