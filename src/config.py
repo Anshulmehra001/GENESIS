@@ -98,6 +98,11 @@ ENABLE_LOGGING = True
 LOG_INTERVAL = 100  # Log stats every N ticks
 EMERGENCY_STOP_POPULATION = 50000  # Hard stop if population explodes
 
+# Persistence
+ENABLE_AUTOSAVE = True
+AUTOSAVE_INTERVAL = 1000  # Auto-save every N ticks
+KEEP_AUTOSAVES = 5  # Number of autosaves to keep
+
 # Phase 4: Cognitive Emergence
 ENABLE_ABSTRACT_REASONING = True
 ENABLE_LANGUAGE = True

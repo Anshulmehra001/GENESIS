@@ -203,6 +203,8 @@ class Visualizer:
                     self.paused = not self.paused
                 elif event.key == pygame.K_r:
                     return 'reset'
+                elif event.key == pygame.K_s:
+                    return 'save'
         
         return True
     

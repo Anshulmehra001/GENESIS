@@ -39,10 +39,18 @@ pip install -r requirements.txt
 python run.py
 ```
 
+### Resume from Save
+```bash
+python run.py final_save.pkl
+# or
+python run.py saves/autosave_tick_5000.pkl
+```
+
 ### Controls
 - **SPACE**: Pause/Resume
+- **S**: Save manually
 - **R**: Reset universe
-- **ESC**: Quit
+- **ESC**: Quit (auto-saves)
 
 **See [docs/QUICKSTART.md](docs/QUICKSTART.md) for detailed guide.**
 

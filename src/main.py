@@ -6,9 +6,11 @@ Run this to start the simulation and watch evolution unfold.
 """
 
 import random
+import sys
 from universe import Universe
 from organism import Organism
 from visualizer import Visualizer
+from persistence import SimulationSaver, restore_universe
 from config import *
 
 def initialize_universe():
@@ -58,7 +60,23 @@ def log_stats(universe):
 
 def main():
     """Main simulation loop"""
-    universe = initialize_universe()
+    # Check for save file argument
+    saver = SimulationSaver()
+    
+    if len(sys.argv) > 1:
+        # Load from save file
+        save_filename = sys.argv[1]
+        save_data = saver.load(save_filename)
+        
+        if save_data:
+            universe = Universe()
+            universe = restore_universe(save_data, universe)
+            print(f"🔄 Resumed from tick {universe.tick}")
+        else:
+            universe = initialize_universe()
+    else:
+        universe = initialize_universe()
+    
     visualizer = Visualizer(universe)
     
     running = True
@@ -76,6 +94,10 @@ def main():
                 universe = initialize_universe()
                 visualizer.universe = universe
                 continue
+            elif event_result == 'save':
+                print("\n💾 Manual save...")
+                saver.save(universe)
+                continue
             
             # Update simulation (if not paused)
             if not visualizer.is_paused():
@@ -85,6 +107,10 @@ def main():
                     print("\n⚠️ Simulation stopped due to safety limits")
                     running = False
                     break
+                
+                # Auto-save every 1000 ticks
+                if ENABLE_AUTOSAVE and universe.tick % AUTOSAVE_INTERVAL == 0:
+                    saver.autosave(universe, AUTOSAVE_INTERVAL)
                 
                 # Log stats periodically
                 if ENABLE_LOGGING and universe.tick % LOG_INTERVAL == 0:
@@ -103,6 +129,10 @@ def main():
         print("\n\n⚠️ Simulation interrupted by user")
     
     finally:
+        # Save before exit
+        print("\n💾 Saving simulation state...")
+        final_save = saver.save(universe, "final_save.pkl")
+        
         # Final statistics
         stats = universe.get_stats()
         print("\n" + "="*60)
@@ -115,6 +145,8 @@ def main():
         print(f"Total deaths:       {stats['total_deaths']}")
         print(f"Energy consumed:    {stats['total_energy_consumed']:.0f}")
         print("="*60)
+        print(f"\n💾 Saved to: {final_save}")
+        print("   To resume: python run.py final_save.pkl")
         
         visualizer.close()
         print("\n👋 Simulation ended. Thank you for exploring GENESIS.")
