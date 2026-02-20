@@ -227,4 +227,54 @@ class Universe:
             stats['active_signals'] = len(self.signals) if hasattr(self, 'signals') else 0
             stats['signals_emitted'] = self.stats.get('signals_emitted', 0)
         
+        # Phase 4 stats - aggregate from organisms
+        if ENABLE_ABSTRACT_REASONING and self.organisms:
+            reasoning_organisms = [o for o in self.organisms if hasattr(o, 'reasoning')]
+            if reasoning_organisms:
+                stats['avg_patterns_recognized'] = np.mean([o.reasoning.get_stats()['patterns_recognized'] 
+                                                           for o in reasoning_organisms])
+                stats['avg_categories'] = np.mean([o.reasoning.get_stats()['categories_formed'] 
+                                                  for o in reasoning_organisms])
+        
+        if ENABLE_LANGUAGE and self.organisms:
+            language_organisms = [o for o in self.organisms if hasattr(o, 'language')]
+            if language_organisms:
+                stats['avg_vocabulary'] = np.mean([o.language.get_vocabulary_size() 
+                                                  for o in language_organisms])
+                stats['total_utterances'] = sum([len(o.language.utterances_produced) 
+                                                for o in language_organisms])
+        
+        if ENABLE_SELF_AWARENESS and self.organisms:
+            aware_organisms = [o for o in self.organisms if hasattr(o, 'self_awareness')]
+            if aware_organisms:
+                stats['self_aware_count'] = sum([1 for o in aware_organisms 
+                                                if o.self_awareness.recognizes_self])
+                stats['avg_reflections'] = np.mean([len(o.self_awareness.reflections) 
+                                                   for o in aware_organisms])
+        
+        if ENABLE_CREATIVITY and self.organisms:
+            creative_organisms = [o for o in self.organisms if hasattr(o, 'creativity')]
+            if creative_organisms:
+                stats['total_innovations'] = sum([o.creativity.innovations_created 
+                                                 for o in creative_organisms])
+                stats['avg_exploration_rate'] = np.mean([o.creativity.exploration_rate 
+                                                        for o in creative_organisms])
+        
+        # Phase 5 stats - AGI emergence
+        if ENABLE_GENERAL_INTELLIGENCE and self.organisms:
+            agi_organisms = [o for o in self.organisms if hasattr(o, 'agi')]
+            if agi_organisms:
+                stats['avg_general_intelligence'] = np.mean([o.agi.calculate_general_intelligence() 
+                                                            for o in agi_organisms])
+                stats['total_problems_solved'] = sum([sum(o.agi.problems_solved.values()) 
+                                                      for o in agi_organisms])
+                stats['avg_consciousness_phi'] = np.mean([o.agi.consciousness.phi 
+                                                         for o in agi_organisms])
+                stats['total_autonomous_goals'] = sum([len(o.agi.goals) 
+                                                      for o in agi_organisms])
+                stats['avg_complexity'] = np.mean([o.agi.measure_complexity() 
+                                                  for o in agi_organisms])
+                stats['novel_behaviors_archived'] = sum([len(o.agi.behavior_archive) 
+                                                        for o in agi_organisms])
+        
         return stats

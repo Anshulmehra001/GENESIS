@@ -97,3 +97,74 @@ FPS = 30
 ENABLE_LOGGING = True
 LOG_INTERVAL = 100  # Log stats every N ticks
 EMERGENCY_STOP_POPULATION = 50000  # Hard stop if population explodes
+
+# Phase 4: Cognitive Emergence
+ENABLE_ABSTRACT_REASONING = True
+ENABLE_LANGUAGE = True
+ENABLE_SELF_AWARENESS = True
+ENABLE_CREATIVITY = True
+ENABLE_METACOGNITION = True
+
+# Abstract Reasoning
+PATTERN_RECOGNITION_MEMORY = 50  # How many observations to remember
+CATEGORY_LIMIT = 20  # Max categories to form
+CAUSAL_LEARNING_RATE = 0.1
+
+# Language
+LANGUAGE_INNOVATION_RATE = 0.01  # Chance to invent new symbol
+LANGUAGE_LEARNING_RATE = 0.1  # Rate of learning from others
+MAX_VOCABULARY_SIZE = 100
+ENABLE_GRAMMAR = True
+
+# Self-Awareness
+ENABLE_SELF_RECOGNITION = True
+ENABLE_THEORY_OF_MIND = True
+REFLECTION_INTERVAL = 100  # Ticks between self-reflections
+MAX_OTHER_MODELS = 10  # Max other organisms to model
+
+# Creativity & Innovation
+EXPLORATION_RATE = 0.3  # Balance exploration vs exploitation
+PLAY_ENERGY_THRESHOLD = 0.7  # Energy level needed for play
+NOVELTY_REWARD = 10  # Energy reward for novel behaviors
+INNOVATION_DIFFUSION_RATE = 0.05  # How fast innovations spread
+
+# Recursive Self-Improvement (Experimental - Disabled by default)
+ENABLE_SELF_MODIFICATION = False  # DANGEROUS: Allow organisms to modify own code
+SELF_MOD_SAFETY_CHECKS = True
+SELF_MOD_ROLLBACK = True
+MAX_MODIFICATIONS_PER_LIFETIME = 5
+
+# Phase 5: AGI Emergence
+ENABLE_GENERAL_INTELLIGENCE = True
+ENABLE_AUTONOMOUS_GOALS = True
+ENABLE_CONSCIOUSNESS_METRICS = True
+ENABLE_ETHICAL_REASONING = True
+ENABLE_NOVELTY_SEARCH = True
+
+# General Problem Solving
+PROBLEM_DIVERSITY = 5  # Number of problem domains
+ENABLE_TRANSFER_LEARNING = True
+ENABLE_ZERO_SHOT_LEARNING = True
+ENABLE_META_LEARNING = True
+
+# Goal Formation
+MAX_GOALS_PER_ORGANISM = 10
+GOAL_FORMATION_RATE = 0.01  # Chance per tick to form new goal
+LONG_TERM_PLANNING_HORIZON = 1000  # Ticks
+
+# Consciousness
+CALCULATE_PHI = True  # Integrated Information Theory
+GLOBAL_WORKSPACE_SIZE = 10
+ATTENTION_MECHANISMS = True
+
+# Ethics
+FAIRNESS_LEARNING_RATE = 0.01
+COOPERATION_LEARNING_RATE = 0.01
+ENABLE_MORAL_EMOTIONS = True
+ENABLE_REPUTATION = True
+
+# Open-Ended Evolution
+NOVELTY_REWARD_MULTIPLIER = 2.0  # Reward for novel behaviors
+COMPLEXITY_TRACKING = True
+DIVERSITY_MAINTENANCE = True
+EXTINCTION_RESISTANCE = True

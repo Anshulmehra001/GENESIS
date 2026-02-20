@@ -36,6 +36,36 @@ class Organism:
             self.kin = []  # List of recognized kin
             self.group = None
         
+        # Phase 4: Abstract Reasoning
+        if ENABLE_ABSTRACT_REASONING:
+            from abstract_reasoning import AbstractReasoning
+            self.reasoning = AbstractReasoning(self)
+        
+        # Phase 4: Language
+        if ENABLE_LANGUAGE:
+            from language_system import LanguageSystem
+            self.language = LanguageSystem(self)
+        
+        # Phase 4: Self-Awareness
+        if ENABLE_SELF_AWARENESS:
+            from self_awareness import SelfAwareness
+            self.self_awareness = SelfAwareness(self)
+        
+        # Phase 4: Creativity
+        if ENABLE_CREATIVITY:
+            from creativity import CreativitySystem
+            self.creativity = CreativitySystem(self)
+        
+        # Phase 4.5: Self-Modification (Experimental)
+        if ENABLE_SELF_MODIFICATION:
+            from self_modification import SelfModificationSystem
+            self.self_modification = SelfModificationSystem(self)
+        
+        # Phase 5: AGI Emergence
+        if ENABLE_GENERAL_INTELLIGENCE:
+            from agi_emergence import GeneralIntelligence
+            self.agi = GeneralIntelligence(self)
+        
         # Genome - the "DNA" that defines behavior
         if genome is None:
             self.genome = self._create_random_genome()
@@ -76,6 +106,23 @@ class Organism:
             genome['cooperation'] = random.random()
             genome['aggression'] = random.random()
         
+        # Phase 4: Cognitive genes
+        if ENABLE_ABSTRACT_REASONING:
+            genome['pattern_recognition'] = random.random()
+            genome['causal_reasoning'] = random.random()
+        
+        if ENABLE_LANGUAGE:
+            genome['language_ability'] = random.random()
+            genome['innovation_tendency'] = random.random()
+        
+        if ENABLE_CREATIVITY:
+            genome['curiosity'] = random.random()
+            genome['exploration_tendency'] = random.random()
+        
+        if ENABLE_SELF_AWARENESS:
+            genome['self_reflection'] = random.random()
+            genome['theory_of_mind'] = random.random()
+        
         return genome
     
     def mutate_genome(self):
@@ -95,6 +142,14 @@ class Organism:
                 genes.extend(['signal_probability', 'signal_response'])
             if ENABLE_SOCIAL:
                 genes.extend(['cooperation', 'aggression'])
+            if ENABLE_ABSTRACT_REASONING:
+                genes.extend(['pattern_recognition', 'causal_reasoning'])
+            if ENABLE_LANGUAGE:
+                genes.extend(['language_ability', 'innovation_tendency'])
+            if ENABLE_CREATIVITY:
+                genes.extend(['curiosity', 'exploration_tendency'])
+            if ENABLE_SELF_AWARENESS:
+                genes.extend(['self_reflection', 'theory_of_mind'])
             
             gene = random.choice(genes)
             
@@ -399,6 +454,86 @@ class Organism:
                 if self._is_kin(organism):
                     if organism not in self.kin:
                         self.kin.append(organism)
+        
+        # Phase 4: Abstract Reasoning - observe and learn patterns
+        if ENABLE_ABSTRACT_REASONING:
+            observation = {
+                'energy_here': universe.get_energy(self.x, self.y),
+                'age': self.age,
+                'energy': self.energy
+            }
+            self.reasoning.observe(observation)
+        
+        # Phase 4: Language - occasionally communicate
+        if ENABLE_LANGUAGE and random.random() < self.genome.get('language_ability', 0.1):
+            if self.energy < 100:
+                utterance = self.language.express('need_energy')
+                if utterance:
+                    # Broadcast to nearby organisms
+                    nearby = self.sense_organisms(universe)
+                    for other, _ in nearby[:3]:
+                        if hasattr(other, 'language'):
+                            other.language.comprehend(utterance)
+        
+        # Phase 4: Self-Awareness - reflect periodically
+        if ENABLE_SELF_AWARENESS:
+            action = self.self_awareness.reflect(universe.tick)
+            if action == 'change_strategy':
+                # Change behavior based on reflection
+                self.genome['move_randomness'] = random.random()
+        
+        # Phase 4: Creativity - explore or exploit
+        if ENABLE_CREATIVITY:
+            state = (self.x, self.y, self.energy)
+            self.creativity.record_state_visit(state)
+            
+            # Occasionally try novel behavior
+            if self.creativity.should_explore(state):
+                novel = self.creativity.generate_novel_behavior(state)
+                # Try novel behavior (simplified)
+                if novel and random.random() < 0.5:
+                    dx = random.choice([-1, 0, 1])
+                    dy = random.choice([-1, 0, 1])
+                    self.move(dx, dy, universe)
+                    return  # Skip normal behavior
+        
+        # Phase 4.5: Self-Modification - occasionally try to improve self
+        if ENABLE_SELF_MODIFICATION and hasattr(self, 'self_modification'):
+            if random.random() < 0.001:  # Rare
+                modification = self.self_modification.propose_modification()
+                if modification:
+                    if self.self_modification.test_modification(modification):
+                        self.self_modification.apply_modification(modification)
+        
+        # Phase 5: AGI - pursue autonomous goals
+        if ENABLE_GENERAL_INTELLIGENCE and hasattr(self, 'agi'):
+            # Measure consciousness
+            if CALCULATE_PHI and random.random() < 0.01:
+                self.agi.measure_consciousness()
+            
+            # Pursue current goal
+            if ENABLE_AUTONOMOUS_GOALS:
+                goal = self.agi.pursue_goal()
+                
+                # Goal might influence behavior
+                if goal and goal.description == 'explore_environment':
+                    # Exploration behavior
+                    if random.random() < 0.3:
+                        dx = random.choice([-1, 0, 1])
+                        dy = random.choice([-1, 0, 1])
+                        self.move(dx, dy, universe)
+                        return
+            
+            # Novelty search
+            if ENABLE_NOVELTY_SEARCH:
+                current_behavior = (self.x, self.y, self.age)
+                novelty = self.agi.calculate_novelty(current_behavior)
+                
+                if novelty > 0.7:
+                    # Novel behavior! Archive it
+                    self.agi.archive_behavior(current_behavior)
+                    # Reward novelty
+                    self.energy += NOVELTY_REWARD_MULTIPLIER
         
         # Decide and execute move
         dx, dy = self.decide_move(universe)
